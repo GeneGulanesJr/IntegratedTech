@@ -37,7 +37,8 @@ async function createClient(values){
       middle: values.middlename,
       last: values.lastname,
       age: values.age,
-      sex:values.sex
+      sex:values.sex,
+      email:values.email
     });
 
 }
@@ -133,6 +134,15 @@ async function createClient(values){
                           )}
                         </Field>
 
+                        <Field name='email' >
+                          {({ field, form }) => (
+                              <FormControl isInvalid={form.errors.email && form.touched.email}>
+                                <FormLabel htmlFor='email'>Last Name</FormLabel>
+                                <Input {...field} id='email' placeholder='email' />
+                                <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                              </FormControl>
+                          )}
+                        </Field>
 
 
                         <Field name='age'  >

@@ -1,35 +1,61 @@
 import {
-  Badge,
-  chakra,
-  Code,
-  Heading,
-  List,
-  ListItem,
-  OrderedList,
-  Text
+    Badge,
+    chakra,
+    Code,
+    Heading,
+    List,
+    ListItem,
+    OrderedList, Stack,
+    Text
 } from '@chakra-ui/react'
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import { Layout } from '../components/Layout'
 import { useAuth } from '../contexts/AuthContext'
+import {collection, getDocs, serverTimestamp,doc,onSnapshot,} from "firebase/firestore";
+
+import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react'
+import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons'
+import {db} from "../utils/init-firebase";
+import TempModal from "./TargetClientList/tempModal";
+import WorkModal from "./TargetClientList/WorkModal";
+
+
 
 export default function Homepage() {
+
+    const [targetClient, data] = useState([]);
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        const usersCollectionRef = collection(db, "patientInfo");
+        onSnapshot(usersCollectionRef, (snapshot) => {
+            let userData = []
+            snapshot.docs.forEach(doc => {
+                userData.push({ ...doc.data(), id: doc.id })
+            })
+            data(userData)
+        })
+
+    };
+
+
+
+
+
+
+
   const { currentUser } = useAuth()
   return (
     <Layout>
-      <Heading>Home page</Heading>
-      <Text my={6}>{currentUser?.email}</Text>
+
+
 
       <Heading>
-        Firebase Authentication
-        <chakra.span
-          fontWeight='black'
-          fontStyle='italic'
-          fontSize='9xl'
-          mx={2}
-        >
-          v9
-        </chakra.span>
+     Animal Bite
+
         <Badge
           fontWeight='black'
           fontSize='4xl'
@@ -37,53 +63,46 @@ export default function Homepage() {
           px={2}
           colorScheme='green'
         >
-          NEW API
+          Dashboard
         </Badge>
       </Heading>
-      <OrderedList fontSize='3xl' my={4}>
-        <ListItem>Email password authentication (Register/Login)</ListItem>
-        <ListItem>Google Sign in</ListItem>
-        <ListItem>Forgot Password</ListItem>
-        <ListItem>Custom Reset password page</ListItem>
-        <ListItem>Protected routes</ListItem>
-        <ListItem>
-          <Code fontSize='inherit'> Redirect TO</Code> or Back (keeping the
-          state)
-        </ListItem>
-        <ListItem>
-          custom Auth Hook <Code fontSize='3xl'>useAuth()</Code>
-        </ListItem>
-        <ListItem>Loading indicators while sign-in/up</ListItem>
-        <ListItem>
-          Dark Mode enabled template using
-          <Badge
-            fontSize='inherit'
-            colorScheme='teal'
-            mx={2}
-            textTransform='capitalize'
-            borderRadius='md'
-          >
-            Chakra UI
-          </Badge>
-        </ListItem>
-      </OrderedList>
-      <Heading size='md' mt={8}>
-        Some other links (only for reference):
-      </Heading>
-      <List>
-        <ListItem>
-          <Link to='/reset-password'>reset page</Link>
-        </ListItem>
-        <ListItem>
-          <Link to='/forgot-password'>forgot page</Link>
-        </ListItem>
-        <ListItem>
-          <Link to='/test'>test page</Link>
-        </ListItem>
-        <ListItem>
-          <Link to='/reports'>reports</Link>
-        </ListItem>
-      </List>
+
+
+        <Table variant="striped" >
+            <Thead>
+                <Tr>
+                    <Th>Last Name</Th>
+                    <Th>First Name</Th>
+                    <Th>Middle Name</Th>
+                    <Th>Age</Th>
+                    <Th>Sex</Th>
+                    <Th>Status</Th>
+                    <Th>Schedule</Th>
+
+                </Tr>
+            </Thead>
+            <Tbody>
+                {targetClient.map((works) => {
+                    return (
+                        <Tr key={works.id}>
+                            <Td> {works.last}</Td>
+                            <Td>{works.first}</Td>
+                            <Td>{works.middle} </Td>
+                            <Td>{works.age} </Td>
+                            <Td>{works.sex}</Td>
+                            <Td>{works.status}</Td>
+                            <Td>{works.schedule}</Td>
+                        </Tr>
+
+                    );
+                })}
+            </Tbody>
+        </Table>
+
+
+
+
+
     </Layout>
   )
 }

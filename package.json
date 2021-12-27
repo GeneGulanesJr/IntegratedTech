@@ -17,6 +17,9 @@
     "firebase": "^9.0.2",
     "formik": "^2.2.9",
     "framer-motion": "^4.1.17",
+    "i": "^0.3.7",
+    "match-sorter": "^6.3.1",
+    "npm": "^8.3.0",
     "react": "^17.0.2",
     "react-datepicker": "^4.5.0",
     "react-dom": "^17.0.2",
@@ -24,6 +27,8 @@
     "react-icons": "^4.3.1",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
+    "react-table": "^7.7.0",
+    "styled-components": "^5.3.3",
     "uuid": "^8.3.2"
   },
   "scripts": {
@@ -49,6 +54,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {}
+  }
 }

@@ -21,7 +21,7 @@ import {Form, Field, Formik, useField} from "formik";
 import { useToast } from '@chakra-ui/react'
 import {AddIcon} from "@chakra-ui/icons";
 import { db } from '../../utils/init-firebase'
-import {collection,  addDoc} from "firebase/firestore"
+import {collection, addDoc, doc, updateDoc} from "firebase/firestore"
 
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
@@ -37,16 +37,16 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 export default  function Immunization ({works}) {
 
 
-    async function createClient(values){
-        const usersCollectionRef = collection(db, "client");
-        await addDoc(usersCollectionRef, {
-            first: values.firstname,
-            middle: values.middlename,
-            last: values.lastname,
-            age: values.age,
-            sex:values.sex
+    async  function updateUsers(values) {
+        const documentId = JSON.parse(JSON.stringify(works.id))
+        const userRef = doc(db, 'patientInfo', documentId);
+        await  updateDoc(userRef,{
+            Immunization: values
+        }).then(() => {
+            alert("Form Updated Successfully")
+        }).catch(function (error) {
+            console.error("Error writing document: ", error);
         });
-
     }
 
     const {publishedDate,onChange} = useState()
@@ -78,7 +78,58 @@ export default  function Immunization ({works}) {
 
                     <DrawerBody>
                         <Stack spacing='24px'>
+                            <Formik   initialValues={{
 
+                            }}
+                                      onSubmit={async (values) => {
+                                          updateUsers(values)
+                                      }}
+
+                            >
+                                {(props) => (
+                                    <Form>
+
+
+
+                                        <FormLabel htmlFor='mode'>Immunization Injection</FormLabel>
+                                        <div role="group" aria-labelledby="checkbox-group">
+                                            <label>
+                                                <Field type="checkbox" name="transmissionType" value="first" />
+                                                First Injection
+                                            </label>
+                                            <label>
+                                                <Field type="checkbox" name="transmissionType" value="second" />
+                                                Second Injection
+                                            </label>
+
+                                            <label>
+                                                <Field type="checkbox" name="transmissionType" value="third" />
+                                                Third Injection
+                                            </label>
+                                            <label>
+                                                <Field type="checkbox" name="transmissionType" value="booster" />
+                                                Booster
+                                            </label>
+                                        </div>
+
+
+
+
+
+
+
+
+                                        <Button
+                                            mt={4}
+                                            colorScheme='teal'
+                                            isLoading={props.isSubmitting}
+                                            type='submit'
+                                        >
+                                            Submit
+                                        </Button>
+                                    </Form>
+                                )}
+                            </Formik>
                         </Stack>
                     </DrawerBody>
 

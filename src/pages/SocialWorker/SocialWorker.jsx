@@ -15,7 +15,7 @@ import {
 import React, { useState, useEffect } from 'react'
 import {
     collection,
-    getDocs,
+    getDocs, onSnapshot,
 } from "firebase/firestore";
 import { db } from '../../utils/init-firebase'
 import Create from "./Create";
@@ -25,17 +25,21 @@ export default function SocialWorker() {
 
     const [socialWork, setSocialWork] = useState([]);
 
-
     useEffect(() => {
-
-        const getSocialWork = async () => {
-            const usersCollectionRef = collection(db, "users");
-            const data = await getDocs(usersCollectionRef);
-            setSocialWork(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-        };
-
-        getSocialWork();
+        fetchData();
     }, []);
+
+    const fetchData = () => {
+        const usersCollectionRef = collection(db, "client");
+        onSnapshot(usersCollectionRef, (snapshot) => {
+            let userData = []
+            snapshot.docs.forEach(doc => {
+                userData.push({ ...doc.data(), id: doc.id })
+            })
+            setSocialWork(userData)
+        })
+
+    };
 
 
 
@@ -45,7 +49,7 @@ export default function SocialWorker() {
 
         <Layout>
             <Flex>
-                <Heading>Social Worker</Heading>
+                <Heading>Social Worker Account List</Heading>
                 <Spacer/>
 
                 <Create/>
@@ -64,7 +68,7 @@ export default function SocialWorker() {
                         return (
 
                             <Tr key={works.id}>
-                                <Td>{works.displayName}</Td>
+                                <Td>{works.first}</Td>
                                 <Td>
                                     <Stack direction="row" spacing={1}>
                                    <Update works= {works}/>

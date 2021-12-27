@@ -2,7 +2,7 @@ import {
   Box,
   HStack,
   IconButton,
-  Spacer,
+  Spacer, Text,
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react'
@@ -29,11 +29,12 @@ export function Navbar() {
         mx='auto'
         spacing={4}
       >
-      
-        <Navlink to='/' name='Firebase Authentication' size='lg' />
+
+        <Navlink to='/' name='Dashboard' size='lg' />
+        <Text my={6}>Current User: {currentUser?.email}</Text>
         <Spacer />
-        {currentUser && <Navlink to='/social-worker' name='Social Worker' />}
-        {currentUser && <Navlink to='/target-client-list' name='Target Client List' />}
+        {currentUser && <Navlink to='/social-worker' name='Social Worker Account List' />}
+        {currentUser && <Navlink to='/target-client-list' name='Patient List' />}
         {currentUser && <Navlink to='/profile' name='Profile' />}
         {!currentUser && <Navlink to='/login' name='Login' />}
         {!currentUser && <Navlink to='/register' name='Register' />}

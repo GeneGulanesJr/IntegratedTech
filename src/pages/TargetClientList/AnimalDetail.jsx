@@ -15,13 +15,13 @@ import {
     Stack,
     Select,
     NumberInput,
-    NumberInputField, Text, Heading, FormHelperText, Box
+    NumberInputField, Text, Heading, FormHelperText, Box,
 } from '@chakra-ui/react'
 import {Form, Field, Formik, useField} from "formik";
 import { useToast } from '@chakra-ui/react'
 import {AddIcon} from "@chakra-ui/icons";
 import { db } from '../../utils/init-firebase'
-import {collection,  addDoc} from "firebase/firestore"
+import {collection, doc, addDoc,updateDoc} from "firebase/firestore"
 
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
@@ -31,22 +31,22 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 
 
 export default  function AnimalDetail ({works}) {
 
 
-    async function createClient(values){
-        const usersCollectionRef = collection(db, "client");
-        await addDoc(usersCollectionRef, {
-            first: values.firstname,
-            middle: values.middlename,
-            last: values.lastname,
-            age: values.age,
-            sex:values.sex
+    async  function updateUsers(values) {
+        const documentId = JSON.parse(JSON.stringify(works.id))
+        const userRef = doc(db, 'patientInfo', documentId);
+        await  updateDoc(userRef,{
+            AnimalDetail: values
+        }).then(() => {
+            alert("Form Updated Successfully")
+        }).catch(function (error) {
+            console.error("Error writing document: ", error);
         });
-
     }
 
     const {publishedDate,onChange} = useState()
@@ -81,8 +81,7 @@ export default  function AnimalDetail ({works}) {
 
                             }}
                                 onSubmit={async (values) => {
-                                    await sleep(500);
-                                    alert(JSON.stringify(values, null, 2));
+                                    updateUsers(values)
                                 }}
 
                            >

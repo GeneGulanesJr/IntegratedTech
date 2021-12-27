@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { Layout } from '../../components/Layout'
 import React, {useEffect, useState} from 'react'
-import {collection, getDocs} from "firebase/firestore";
+import {collection, getDocs, onSnapshot} from "firebase/firestore";
 import {db} from "../../utils/init-firebase";
 import TempModal from "./tempModal";
 import WorkModal from "./WorkModal";
@@ -24,15 +24,22 @@ import Immunization from "./Immunization";
 export default function TargetClientList() {
     const [targetClient, setTargetClient] = useState([]);
 
-
     useEffect(() => {
-        const usersCollectionRef = collection(db, "client");
-        const getClientList = async () => {
-            const data = await getDocs(usersCollectionRef);
-            setTargetClient(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-        };
-        getClientList();
+        fetchData();
     }, []);
+
+    const fetchData = () => {
+        const usersCollectionRef = collection(db, "patientInfo");
+        onSnapshot(usersCollectionRef, (snapshot) => {
+            let userData = []
+            snapshot.docs.forEach(doc => {
+                userData.push({ ...doc.data(), id: doc.id })
+            })
+            setTargetClient(userData)
+        })
+
+    };
+
 
 
 
