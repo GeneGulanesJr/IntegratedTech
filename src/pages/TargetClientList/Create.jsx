@@ -38,7 +38,10 @@ async function createClient(values){
       last: values.lastname,
       age: values.age,
       sex:values.sex,
-      email:values.email
+      email:values.email,
+      status:"No Dose",
+      schedule:"No Schedule"
+
     });
 
 }
