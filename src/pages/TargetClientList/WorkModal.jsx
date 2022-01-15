@@ -9,19 +9,9 @@ import {
     ModalCloseButton,
     Button,
     useDisclosure,
-    Heading,
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    Box,
-    AccordionIcon,
-    AccordionPanel, FormControl, FormLabel, Input, FormErrorMessage, NumberInput, NumberInputField, toast, Spacer,
+
 } from '@chakra-ui/react'
-import {AddIcon} from "@chakra-ui/icons";
 import React, {useEffect, useState} from 'react'
-import {collection, getDocs, query, where, doc, getDoc, addDoc,updateDoc} from "firebase/firestore";
-import {db} from "../../utils/init-firebase";
-import {Field, Form, Formik} from "formik";
 import AnimalDetail from "./AnimalDetail";
 import Immunization from "./Immunization";
 

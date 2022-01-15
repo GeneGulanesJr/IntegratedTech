@@ -31,7 +31,7 @@ export default  function Create () {
 
 
 async function createClient(values){
-  const usersCollectionRef = collection(db, "client");
+  const usersCollectionRef = collection(db, "patientInfo");
     await addDoc(usersCollectionRef, {
       first: values.firstname,
       middle: values.middlename,
@@ -66,7 +66,7 @@ async function createClient(values){
           <DrawerContent>
             <DrawerCloseButton />
             <DrawerHeader borderBottomWidth='1px'>
-              Create New Social Worker Account
+              Create New Patient Record
             </DrawerHeader>
 
             <DrawerBody>
@@ -137,8 +137,8 @@ async function createClient(values){
                         <Field name='email' >
                           {({ field, form }) => (
                               <FormControl isInvalid={form.errors.email && form.touched.email}>
-                                <FormLabel htmlFor='email'>Last Name</FormLabel>
-                                <Input {...field} id='email' placeholder='email' />
+                                <FormLabel htmlFor='email'>Email Address</FormLabel>
+                                <Input {...field} id='email' placeholder='email' type = 'email' />
                                 <FormErrorMessage>{form.errors.email}</FormErrorMessage>
                               </FormControl>
                           )}
@@ -156,9 +156,10 @@ async function createClient(values){
                           )}
                         </Field>
 
+
                         <FormControl >
                           <Field as="select" name="sex" >
-
+                            <option value='null'>Select Option</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
 
